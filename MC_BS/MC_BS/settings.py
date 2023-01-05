@@ -64,8 +64,12 @@ WSGI_APPLICATION = 'MC_BS.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'railway',
+        'HOST': 'containers-us-west-51.railway.app',
+        'PORT': 7326,
+        'USER': 'postgres',
+        'PASSWORD': 'MMQAX2zRQbVjFtUJ1Jmp'
     }
 }
 
