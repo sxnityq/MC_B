@@ -1,1 +1,1 @@
-web: gunicorn MC_BS.wsgi --log-file -
+web: cd ./MC_BS && gunicorn MC_BS.wsgi --log-file -
