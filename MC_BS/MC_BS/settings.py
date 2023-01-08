@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -11,7 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-yr%5ag!!np5j0pv&yqazgs(5g5($mx#06j81v==v@w-oqf#ixn'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -26,6 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'main.apps.MainConfig',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -66,10 +68,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'railway',
-        'HOST': 'containers-us-west-51.railway.app',
-        'PORT': 7326,
+        'HOST': 'containers-us-west-86.railway.app',
+        'PORT': 5656,
         'USER': 'postgres',
-        'PASSWORD': 'MMQAX2zRQbVjFtUJ1Jmp'
+        'PASSWORD': 'duNVp1pluYiTbvSU04wv'
     }
 }
 
@@ -104,13 +106,12 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.1/howto/static-files/
-
-STATIC_URL = 'static/'
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_URL = 'static/'
