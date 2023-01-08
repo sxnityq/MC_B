@@ -10,3 +10,8 @@ class Home(generics.ListAPIView):
      
      serializer_class = NewsSerializer
      queryset = NewsItem.objects.all()
+     
+class SoloNew(generics.RetrieveAPIView):
+     lookup_field = 'slug'
+     serializer_class = NewsSerializer
+     queryset = NewsItem.objects.all()
