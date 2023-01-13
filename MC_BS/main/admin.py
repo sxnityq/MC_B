@@ -1,7 +1,14 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
 
-# Register your models here.
+from .models import NewsItem, CustomUser
 
-from .models import NewsItem
+class CustomUserAdmin(UserAdmin):
+    
+    list_display = ["email", "username"]
+    filter_horizontal = ()
+    fieldsets = ()
+    list_filter = ()
 
+admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(NewsItem)

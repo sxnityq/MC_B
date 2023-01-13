@@ -1,10 +1,52 @@
 from django.db import models
-from django.utils.text import slugify
+from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
+                                        AbstractUser, PermissionsMixin)
 
-from .utils import upload_image
+from .utils import upload_image, upload_user_profile_image
 
 # Create your models here.
 
+
+class CustomUserManager(BaseUserManager):
+    
+    def create_user(self, email, username, password):
+        
+        if not email:
+            raise ValueError("email field must be specified")
+        if not username:
+            raise ValueError("username field must be specified")
+        
+        user = self.model(email=self.normalize_email(email),
+                          username=username)
+        user.set_password(raw_password=password)
+        user.save(using=self._db)
+        return user
+    
+    def create_superuser(self, email, username, password):
+        user = self.create_user(email, username, password)
+        user.is_superuser = True
+        user.is_staff = True
+        user.save(using=self._db)
+        return user
+
+class CustomUser(PermissionsMixin, AbstractBaseUser):
+    
+        email = models.EmailField(verbose_name="email field", unique=True,
+                                  max_length=64, db_index=True)
+        username = models.CharField(verbose_name="username field", unique=True,
+                                    max_length=32, db_index=True)
+        profile_image = models.ImageField(verbose_name="user profile image",
+                                          upload_to=upload_user_profile_image)
+        data_joined = models.DateTimeField(verbose_name="date when user join us",
+                                           auto_now_add=True)
+        is_active = models.BooleanField(verbose_name="active", default=True)
+        is_staff = models.BooleanField(verbose_name="staff", default=False)
+        is_superuser = models.BooleanField(verbose_name="admin", default=False)
+        objects = CustomUserManager()
+        
+        USERNAME_FIELD = 'email'
+        REQUIRED_FIELDS = ['username']
+        
 
 class NewsItem(models.Model):
     
@@ -17,4 +59,7 @@ class NewsItem(models.Model):
     
     creation_date = models.DateTimeField(verbose_name="date of creating",
                                          auto_now_add=True)
+    
+    def __str__(self):
+        return self.title
     

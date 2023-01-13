@@ -4,10 +4,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-yr%5ag!!np5j0pv&yqazgs(5g5($mx#06j81v==v@w-oqf#ixn'
 
@@ -30,6 +26,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
 ]
+
+AUTH_USER_MODEL = "main.CustomUser"
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -70,10 +68,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'railway',
-        'HOST': 'containers-us-west-86.railway.app',
-        'PORT': 5656,
+        'HOST': 'containers-us-west-143.railway.app',
+        'PORT': 6496,
         'USER': 'postgres',
-        'PASSWORD': 'duNVp1pluYiTbvSU04wv'
+        'PASSWORD': '3Opb2ICRWFkWC6b3fWeH'
     }
 }
 
