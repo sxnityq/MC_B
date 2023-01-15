@@ -7,6 +7,11 @@ from .models import NewsItem, CustomUser
 # Create your views here.
 
 
+def home(request):
+     
+     return render(request, template_name="main/testregister.html")
+
+
 class Home(generics.ListAPIView):
      
      serializer_class = NewsSerializer
