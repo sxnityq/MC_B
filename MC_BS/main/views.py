@@ -2,7 +2,7 @@ from django.shortcuts import render, HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework import generics
 
-from .serializers import NewsSerializer, CustomUserSerializer
+from .serializers import NewsSerializer, CustomUserSerializer, AlbumSerializer
 from .models import NewsItem, CustomUser
 # Create your views here.
 
@@ -23,4 +23,9 @@ class UserRegistrationBackend(generics.CreateAPIView):
      
      serializer_class = CustomUserSerializer
      queryset = CustomUser.objects.all()
+
+
+class GetAlbumApi(generics.RetrieveAPIView):
      
+     serializer_class = AlbumSerializer
+     queryset = CustomUser.objects.all()
