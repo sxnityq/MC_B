@@ -13,7 +13,7 @@ class NewsSerializer(ModelSerializer):
 class CustomUserSerializer(serializers.ModelSerializer):
     
     def validate(self, attrs):
-        print(attrs)
+        print('ASSSSSSSSSSSSSSSSSSSSSSSSS', attrs)
         return attrs
     
     password1 = serializers.CharField()
