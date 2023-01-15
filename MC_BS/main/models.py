@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
                                         AbstractUser, PermissionsMixin)
 
-from .utils import upload_image, upload_user_profile_image
+from .utils import upload_image, upload_user_profile_image, upload_albom_element_image
 
 # Create your models here.
 
@@ -62,4 +62,23 @@ class NewsItem(models.Model):
     
     def __str__(self):
         return self.title
+
     
+class Album(models.Model):
+        
+    title = models.CharField(verbose_name="album name", unique=True,
+                             null=True, max_length=64)
+    slug = models.SlugField(verbose_name="album slug", unique=True,
+                            null=False, blank=False)
+    description = models.TextField(verbose_name="Album description", max_length=512)
+
+    def __str__(self):
+        
+        return self.title
+
+
+class AlbumElement(models.Model):
+    
+    image = models.ImageField(verbose_name='album image element',
+                              upload_to=upload_albom_element_image)
+    album = models.ForeignKey(to=Album, on_delete=models.CASCADE)

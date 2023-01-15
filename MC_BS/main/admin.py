@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from .models import NewsItem, CustomUser
+from .models import NewsItem, CustomUser, Album, AlbumElement
 
 class CustomUserAdmin(UserAdmin):
     
@@ -12,3 +12,5 @@ class CustomUserAdmin(UserAdmin):
 
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(NewsItem)
+admin.site.register(Album)
+admin.site.register(AlbumElement)
