@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/sxnity/Desktop/MC_B/venv"
+VIRTUAL_ENV="/home/sxnity/Desktop/screen/trashirl/MC_B/venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

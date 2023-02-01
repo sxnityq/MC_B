@@ -16,6 +16,8 @@ class Home(generics.ListAPIView):
      
      serializer_class = NewsSerializer
      queryset = NewsItem.objects.all()
+     
+     
     
  
 class SoloNew(generics.RetrieveAPIView):

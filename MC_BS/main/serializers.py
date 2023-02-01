@@ -1,4 +1,4 @@
-from collections import OrderedDict, defaultdict
+from collections import OrderedDict
 from collections.abc import Mapping
 
 from django.core.exceptions import ValidationError as DjangoValidationError
@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError as DjangoValidationError
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 from rest_framework.fields import get_error_detail, set_value, SkipField
-from rest_framework.exceptions import ErrorDetail, ValidationError
+from rest_framework.exceptions import ValidationError
 from rest_framework.settings import api_settings
 
 
