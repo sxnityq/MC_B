@@ -10,7 +10,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.settings import api_settings
 
 
-from .models import NewsItem, CustomUser, Album
+from .models import NewsItem, CustomUser, Album, AlbumElement
 
 class NewsSerializer(ModelSerializer):
     
@@ -84,4 +84,11 @@ class AlbumSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Album
-        fields = ("title", "slug", "description")    
+        fields = ("title", "slug", "description")
+
+
+class AlbumElementSerilaizer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = AlbumElement
+        fields = ("image", "album")

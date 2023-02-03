@@ -1,9 +1,12 @@
 from django.shortcuts import render, HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework import generics
+from django.db.models.query import QuerySet
 
-from .serializers import NewsSerializer, CustomUserSerializer, AlbumSerializer
-from .models import NewsItem, CustomUser
+from rest_framework.response import Response
+
+from .serializers import NewsSerializer, CustomUserSerializer, AlbumSerializer, AlbumElementSerilaizer
+from .models import Album, NewsItem, CustomUser
 # Create your views here.
 
 
@@ -16,8 +19,6 @@ class Home(generics.ListAPIView):
      
      serializer_class = NewsSerializer
      queryset = NewsItem.objects.all()
-     
-     
     
  
 class SoloNew(generics.RetrieveAPIView):
@@ -32,7 +33,20 @@ class UserRegistrationBackend(generics.CreateAPIView):
      queryset = CustomUser.objects.all()
 
 
-class GetAlbumApi(generics.RetrieveAPIView):
+class GetAlbumApi(generics.GenericAPIView):
      
-     serializer_class = AlbumSerializer
-     queryset = CustomUser.objects.all()
+     lookup_field = 'slug'
+     serializer_class = AlbumElementSerilaizer
+     queryset = Album.objects.all()
+     
+     def get(self, request, *args, **kwargs):
+          
+          instance = self.get_object()
+          queryset = instance.albumelement_set.all()
+          page = self.paginate_queryset(queryset)
+          if page is not None:
+               serializer = self.get_serializer(page, many=True)
+               return self.get_paginated_response(serializer.data)
+
+          serializer = self.get_serializer(queryset, many=True)
+          return Response(serializer.data)
