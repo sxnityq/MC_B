@@ -78,8 +78,6 @@ class CustomUserSerializer(serializers.Serializer):
         return CustomUser.objects.create(**validated_data)
         
 
-        
-
 class AlbumSerializer(serializers.ModelSerializer):
     
     class Meta:

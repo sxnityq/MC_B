@@ -2,7 +2,8 @@ from django.db import models
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
                                         AbstractUser, PermissionsMixin)
 
-from .utils import upload_image, upload_user_profile_image, upload_albom_element_image
+from .utils import (upload_image_to_news_item, upload_user_profile_image,
+                    upload_albom_element_image)
 
 # Create your models here.
 
@@ -55,7 +56,7 @@ class NewsItem(models.Model):
     slug = models.SlugField(verbose_name='slug field', unique=True,
                             null=False, blank=False)
     descr = models.TextField(verbose_name="description", blank=True, max_length=4096)
-    image = models.ImageField(verbose_name="post image", upload_to=upload_image)
+    image = models.ImageField(verbose_name="post image", upload_to=upload_image_to_news_item)
     
     creation_date = models.DateTimeField(verbose_name="date of creating",
                                          auto_now_add=True)
@@ -72,8 +73,7 @@ class Album(models.Model):
                             null=False, blank=False)
     description = models.TextField(verbose_name="Album description", max_length=512)
 
-    def __str__(self):
-        
+    def __repr__(self):
         return self.title
 
 
@@ -84,5 +84,4 @@ class AlbumElement(models.Model):
     album = models.ForeignKey(to=Album, on_delete=models.CASCADE)
     
     def __str__(self):
-        
-        return f"image for album {Album}"
+        return f"image for album {self.album.title}"
