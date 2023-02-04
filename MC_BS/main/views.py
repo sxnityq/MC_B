@@ -47,7 +47,7 @@ class GetAlbumApi(generics.GenericAPIView):
      
      lookup_field = 'slug'
      serializer_class = AlbumElementSerilaizer
-     queryset = Album.objects.all()
+     queryset = Album.objects.albumelement_set.all()
      
      def get(self, request, *args, **kwargs):
           
@@ -60,3 +60,9 @@ class GetAlbumApi(generics.GenericAPIView):
 
           serializer = self.get_serializer(queryset, many=True)
           return Response(serializer.data)
+
+
+class AlbumListApi(generics.ListAPIView):
+     
+     serializer_class = AlbumSerializer
+     queryset = Album.objects.all()
