@@ -15,11 +15,21 @@ def home(request):
      return render(request, template_name="main/testregister.html")
 
 
-class Home(generics.ListAPIView):
+class Home(generics.GenericAPIView):
      
      serializer_class = NewsSerializer
-     queryset = NewsItem.objects.all()
+     queryset = NewsItem.objects.all().order_by('-creation_date')
     
+     def get(self, request, *args, **kwargs):
+          queryset = self.filter_queryset(self.get_queryset())
+
+          page = self.paginate_queryset(queryset)
+          if page is not None:
+               serializer = self.get_serializer(page, many=True)
+               return self.get_paginated_response(serializer.data)
+
+          serializer = self.get_serializer(queryset, many=True)
+          return Response(serializer.data)
  
 class SoloNew(generics.RetrieveAPIView):
      lookup_field = 'slug'

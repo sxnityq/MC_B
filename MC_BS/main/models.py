@@ -60,6 +60,8 @@ class NewsItem(models.Model):
     
     creation_date = models.DateTimeField(verbose_name="date of creating",
                                          auto_now_add=True)
+    update_date = models.DateTimeField(verbose_name="last update time", 
+                                        auto_now=True)
     
     def __str__(self):
         return self.title
