@@ -1,12 +1,16 @@
 from django.shortcuts import render, HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework import generics
+from django.db.models import Window, F
+from django.db.models.functions import RowNumber
 from django.db.models.query import QuerySet
 
 from rest_framework.response import Response
 
-from .serializers import NewsSerializer, CustomUserSerializer, AlbumSerializer, AlbumElementSerilaizer
-from .models import Album, NewsItem, CustomUser
+from .serializers import (NewsSerializer, CustomUserSerializer,
+                          AlbumSerializer, AlbumElementSerilaizer)
+from .models import Album, NewsItem, CustomUser, AlbumElement
+from .queryset import get_correct_preview_album_api_queryset
 # Create your views here.
 
 
@@ -63,6 +67,7 @@ class GetAlbumApi(generics.GenericAPIView):
 
 
 class AlbumListApi(generics.ListAPIView):
+
+     serializer_class = AlbumElementSerilaizer
+     queryset = get_correct_preview_album_api_queryset(row_amount=5)
      
-     serializer_class = AlbumSerializer
-     queryset = Album.objects.all()

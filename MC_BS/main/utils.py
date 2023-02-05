@@ -6,3 +6,4 @@ def upload_user_profile_image(self, filename):
 
 def upload_albom_element_image(self, filename):
     return f"albumImages/{filename}"
+

@@ -90,3 +90,4 @@ class AlbumElementSerilaizer(serializers.ModelSerializer):
     class Meta:
         model = AlbumElement
         fields = ("image", "album")
+        depth=1
