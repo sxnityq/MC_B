@@ -9,8 +9,8 @@ from rest_framework.fields import get_error_detail, set_value, SkipField
 from rest_framework.exceptions import ValidationError
 from rest_framework.settings import api_settings
 
-
 from .models import NewsItem, CustomUser, Album, AlbumElement
+from .utils import str_to_int
 
 class NewsSerializer(ModelSerializer):
     
@@ -76,13 +76,6 @@ class CustomUserSerializer(serializers.Serializer):
         validated_data.pop('password2')
         validated_data['password'] = password
         return CustomUser.objects.create(**validated_data)
-        
-
-class AlbumSerializer(serializers.ModelSerializer):
-    
-    class Meta:
-        model = Album
-        fields = ("title", "slug", "description")
 
 
 class AlbumElementSerilaizer(serializers.ModelSerializer):
@@ -90,4 +83,20 @@ class AlbumElementSerilaizer(serializers.ModelSerializer):
     class Meta:
         model = AlbumElement
         fields = ("image", "album")
-        depth=1
+
+
+class AlbumSerializer(serializers.ModelSerializer):
+    
+    images = serializers.SerializerMethodField()
+    
+    def get_images(self, obj):
+        
+        limit = self.context['request'].query_params.get('amount', '9')
+        limit = str_to_int(limit)        
+        query = AlbumElement.objects.select_related('album').filter(album=obj).all()[:limit]
+        serializer = AlbumElementSerilaizer(query, many=True)
+        return serializer.data
+    
+    class Meta:
+        model = Album
+        fields = ("title", "slug", "description", "images")     

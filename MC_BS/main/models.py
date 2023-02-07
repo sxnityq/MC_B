@@ -83,7 +83,7 @@ class AlbumElement(models.Model):
     
     image = models.ImageField(verbose_name='album image element',
                               upload_to=upload_albom_element_image)
-    album = models.ForeignKey(to=Album, on_delete=models.CASCADE)
+    album = models.ForeignKey(to=Album, on_delete=models.CASCADE, related_name='images')
     
     def __str__(self):
         return f"image for album {self.album.title}"

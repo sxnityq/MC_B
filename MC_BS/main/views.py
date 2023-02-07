@@ -10,7 +10,6 @@ from rest_framework.response import Response
 from .serializers import (NewsSerializer, CustomUserSerializer,
                           AlbumSerializer, AlbumElementSerilaizer)
 from .models import Album, NewsItem, CustomUser, AlbumElement
-from .queryset import get_correct_preview_album_api_queryset
 # Create your views here.
 
 
@@ -68,6 +67,20 @@ class GetAlbumApi(generics.GenericAPIView):
 
 class AlbumListApi(generics.ListAPIView):
 
-     serializer_class = AlbumElementSerilaizer
-     queryset = get_correct_preview_album_api_queryset(row_amount=5)
+     serializer_class = AlbumSerializer
+     queryset = Album.objects.all()
+     
+     def list(self, request, *args, **kwargs):
+          queryset = self.filter_queryset(self.get_queryset())
+          
+          page = self.paginate_queryset(queryset)
+          if page is not None:
+              print('privet', queryset)
+              serializer = self.get_serializer(page, many=True)
+              return self.get_paginated_response(serializer.data)
+          
+          serializer = self.get_serializer(queryset, many=True)
+          return Response(serializer.data)
+     
+     
      
