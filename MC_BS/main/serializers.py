@@ -112,4 +112,19 @@ class AlbumSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Album
-        fields = ("title", "slug", "description", "images")     
+        fields = ("title", "slug", "description", "images")
+
+
+class AlbumElementSlugSerilaizer(serializers.ModelSerializer):
+    
+    images = serializers.SerializerMethodField()
+    
+    def get_images(self, obj):
+        
+        query = AlbumElement.objects.select_related('album').filter(album=obj).all()
+        serializer = AlbumElementSerilaizer(query, many=True)
+        return serializer.data    
+    
+    class Meta:
+        model = Album
+        fields = ("title", "slug", "description", "images")
