@@ -35,33 +35,29 @@ class Home(generics.GenericAPIView):
           serializer = self.get_serializer(queryset, many=True)
           return Response(serializer.data)
      
-     permission_classes = (IsAuthenticated, )
  
 class SoloNew(generics.RetrieveAPIView):
      lookup_field = 'slug'
      serializer_class = NewsSerializer
      queryset = NewsItem.objects.all()
-     permission_classes = (IsAuthenticated, )
 
 
 class UserRegistrationBackend(generics.CreateAPIView):
      
      serializer_class = CustomUserSerializer
      queryset = CustomUser.objects.all()
-     permission_classes = (IsAuthenticated, )
+
 
 class GetAlbumApi(generics.RetrieveAPIView):
      
      lookup_field = 'slug'
      serializer_class = AlbumElementSlugSerilaizer
      queryset = Album.objects.all()
-     permission_classes = (IsAuthenticated, )
 
 
 class AlbumListApi(generics.ListAPIView):
 
      serializer_class = AlbumSerializer
      queryset = Album.objects.all()
-     permission_classes = (IsAuthenticated, )
      
      
