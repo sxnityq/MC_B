@@ -55,7 +55,7 @@ class GetAlbumApi(generics.GenericAPIView):
      def get(self, request, *args, **kwargs):
           
           instance = self.get_object()
-          queryset = instance.albumelement_set.all()
+          queryset = instance.images.all()
           page = self.paginate_queryset(queryset)
           if page is not None:
                serializer = self.get_serializer(page, many=True)

@@ -2,6 +2,7 @@ from collections import OrderedDict
 from collections.abc import Mapping
 
 from django.core.exceptions import ValidationError as DjangoValidationError
+from django.contrib.auth import get_user_model
 
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
@@ -12,6 +13,9 @@ from rest_framework.settings import api_settings
 from .models import NewsItem, CustomUser, Album, AlbumElement
 from .utils import str_to_int
 
+
+User = get_user_model()
+
 class NewsSerializer(ModelSerializer):
     
     class Meta:
@@ -21,16 +25,22 @@ class NewsSerializer(ModelSerializer):
 
 class CustomUserSerializer(serializers.Serializer):
     
-    password1 = serializers.CharField()
-    password2 = serializers.CharField()
+    password1 = serializers.CharField(write_only=True)
+    password2 = serializers.CharField(write_only=True)
     email = serializers.EmailField(max_length=64, required=True)
     username = serializers.CharField(max_length=32, required=True)
 
-    def validate(self, attrs):
-        if attrs.get('password1') != attrs.get('password2'):
-            raise serializers.ValidationError({'password1':'passwords do not match',
-                                                'password2':'passwords do not match'})
-        return attrs
+    def validate_email(self, value):
+        
+        if User.objects.filter(email=value).exists():
+            raise serializers.ValidationError(detail="email already exists")
+        return value
+
+    def validate_username(self, value):
+        
+        if User.objects.filter(username=value).exists():
+            raise serializers.ValidationError(detail="username already exists")
+        return value
     
     def to_internal_value(self, data):
         """
@@ -71,11 +81,14 @@ class CustomUserSerializer(serializers.Serializer):
 
         return ret
     
+    def save(self, **kwargs):
+        password = self.validated_data.pop('password1')
+        self.validated_data.pop('password2')
+        self.validated_data['password'] = password
+        return super().save(**kwargs)
+    
     def create(self, validated_data):
-        password = validated_data.pop('password1')
-        validated_data.pop('password2')
-        validated_data['password'] = password
-        return CustomUser.objects.create(**validated_data)
+        return User.objects.create_user(**validated_data)
 
 
 class AlbumElementSerilaizer(serializers.ModelSerializer):
