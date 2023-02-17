@@ -70,8 +70,10 @@ class CustomUserSerializer(serializers.Serializer):
         except DjangoValidationError as ex:
                 password2_errors.extend(ex)   
         
-        errors["password1"] = password1_errors
-        errors["password2"] = password2_errors
+        if password1_errors:
+            errors["password1"] = password1_errors
+        if password2_errors:
+            errors["password2"] = password2_errors
         
         fields = self._writable_fields
 
