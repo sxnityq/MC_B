@@ -1,10 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
-                                        AbstractUser, PermissionsMixin)
+                                        AbstractUser, PermissionsMixin, User)
+from django.contrib.auth import password_validation
 
 from .utils import (upload_image_to_news_item, upload_user_profile_image,
                     upload_albom_element_image)
 
+
+from django.contrib.auth import hashers
 # Create your models here.
 
 

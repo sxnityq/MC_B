@@ -14,8 +14,7 @@ from .models import Album, NewsItem, CustomUser, AlbumElement
 # Create your views here.
 
 
-def home(request):
-     
+def home(request):  
      return render(request, template_name="main/testregister.html")
 
 

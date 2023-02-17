@@ -2,7 +2,7 @@ from collections import OrderedDict
 from collections.abc import Mapping
 
 from django.core.exceptions import ValidationError as DjangoValidationError
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, password_validation
 
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
@@ -58,6 +58,12 @@ class CustomUserSerializer(serializers.Serializer):
         if data.get('password1') != data.get('password2'):
             errors['password1'] = ['passwords do not match']
             errors['password2'] = ['passwords do not match']
+        else:
+            try:
+                password_validation.validate_password(data.get('password1'))
+            except DjangoValidationError as ex:
+                errors['password1'] = [ex]
+                errors['password2'] = [ex]
         fields = self._writable_fields
 
         for field in fields:
