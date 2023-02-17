@@ -55,15 +55,24 @@ class CustomUserSerializer(serializers.Serializer):
             }, code='invalid')
         ret = OrderedDict()
         errors = OrderedDict()
+        
+        password1_errors = []
+        password2_errors = []
         if data.get('password1') != data.get('password2'):
-            errors['password1'] = ['passwords do not match']
-            errors['password2'] = ['passwords do not match']
-        else:
-            try:
-                password_validation.validate_password(data.get('password1'))
-            except DjangoValidationError as ex:
-                errors['password1'] = [ex]
-                errors['password2'] = [ex]
+            password1_errors.append('Passwords do not match')
+            password2_errors.append('Passwords do not match')
+        try:
+            password_validation.validate_password(data.get('password1'))
+        except DjangoValidationError as ex:
+                password1_errors.extend(ex)
+        try:
+            password_validation.validate_password(data.get('password2'))
+        except DjangoValidationError as ex:
+                password2_errors.extend(ex)   
+        
+        errors["password1"] = password1_errors
+        errors["password2"] = password2_errors
+        
         fields = self._writable_fields
 
         for field in fields:
