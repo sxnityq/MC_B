@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'main.apps.MainConfig',
     'rest_framework',
     'corsheaders',
+    'drf_yasg'
 ]
 
 AUTH_USER_MODEL = "main.CustomUser"
