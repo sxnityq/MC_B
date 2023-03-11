@@ -1,16 +1,21 @@
 from django.urls import path, include
+from rest_framework_simplejwt.views import (
+    TokenRefreshView,
+)
 
+from .tokens import MyTokenObtainPairView
 
 from .views import (Home, SoloNew, UserRegistrationBackend,
                      GetAlbumApi, home, AlbumListApi)
 
 
 urlpatterns = [
+    path('api/token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/v1/news', view=Home.as_view()),
     path('api/v1/news/<slug:slug>/', view=SoloNew.as_view()),
     path('api/v1/registrate/', view=UserRegistrationBackend.as_view()),
     path('api/v1/album/<slug:slug>/', view=GetAlbumApi.as_view()),
     path('api/v1/album/', view=AlbumListApi.as_view()),
-    path('api/v1/auth/', include('rest_framework.urls')),
     path('test', view=home)
 ]

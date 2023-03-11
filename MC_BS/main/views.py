@@ -20,6 +20,7 @@ def home(request):
 
 class Home(generics.GenericAPIView):
      
+     permission_classes = (IsAuthenticated, )
      serializer_class = NewsSerializer
      queryset = NewsItem.objects.all().order_by('-creation_date')
     
@@ -36,6 +37,8 @@ class Home(generics.GenericAPIView):
      
  
 class SoloNew(generics.RetrieveAPIView):
+     
+     permission_classes = (IsAuthenticated, )
      lookup_field = 'slug'
      serializer_class = NewsSerializer
      queryset = NewsItem.objects.all()
@@ -58,5 +61,3 @@ class AlbumListApi(generics.ListAPIView):
 
      serializer_class = AlbumSerializer
      queryset = Album.objects.all()
-     
-     
