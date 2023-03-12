@@ -1,16 +1,12 @@
-from django.shortcuts import render, HttpResponse
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import render
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
-from django.db.models import Window, F
-from django.db.models.functions import RowNumber
-from django.db.models.query import QuerySet
-
 from rest_framework.response import Response
+from drf_yasg.utils import swagger_auto_schema
 
 from .serializers import (NewsSerializer, CustomUserSerializer,
-                          AlbumSerializer, AlbumElementSerilaizer, AlbumElementSlugSerilaizer)
-from .models import Album, NewsItem, CustomUser, AlbumElement
+                          AlbumSerializer, AlbumElementSlugSerilaizer)
+from .models import Album, NewsItem, CustomUser
 # Create your views here.
 
 
@@ -24,6 +20,7 @@ class Home(generics.GenericAPIView):
      serializer_class = NewsSerializer
      queryset = NewsItem.objects.all().order_by('-creation_date')
     
+     @swagger_auto_schema(operation_description="description")
      def get(self, request, *args, **kwargs):
           queryset = self.filter_queryset(self.get_queryset())
 
